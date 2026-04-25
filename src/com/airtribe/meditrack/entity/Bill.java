@@ -1,22 +1,26 @@
 package com.airtribe.meditrack.entity;
 
-public class Bill {
-    private String billId;
+public class Bill extends MedicalEntity {
     private Appointment appointment;
     private double amount;
     private double tax;
     private double totalAmount;
 
     public Bill(String billId, Appointment appointment, double amount, double tax) {
-        this.billId = billId;
+        super(billId);
         this.appointment = appointment;
         this.amount = amount;
         this.tax = tax;
         this.totalAmount = amount + (amount * tax / 100);
     }
 
-    public String getBillId() { return billId; }
-    public void setBillId(String billId) { this.billId = billId; }
+   @Override
+   public void displayInfo(){
+       System.out.println("Bill ID " + getId());
+       System.out.println("Amount: " + getAmount());
+       System.out.println("Tax: " + getTax());
+       System.out.println("Total Amount: " + getTotalAmount());
+   }
 
     public Appointment getAppointment() { return appointment; }
     public void setAppointment(Appointment appointment) { this.appointment = appointment; }

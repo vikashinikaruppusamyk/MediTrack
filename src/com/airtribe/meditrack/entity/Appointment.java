@@ -1,14 +1,14 @@
 package com.airtribe.meditrack.entity;
 
-public class Appointment {
+public class Appointment extends MedicalEntity{
     private Doctor doctor;
     private Patient patient;
-    private String appointmentId;
+
     private String date;
     private AppointmentStatus status;
 
     public Appointment(String appointmentId, Doctor doctor, Patient patient, String date, AppointmentStatus status) {
-        this.appointmentId = appointmentId;
+        super(appointmentId);
         this.doctor = doctor;
         this.patient = patient;
         this.date = date;
@@ -29,8 +29,14 @@ public class Appointment {
         return patient;
     }
 
-    public String getAppointmentId() { return appointmentId; }
-    public void setAppointmentId(String appointmentId) { this.appointmentId = appointmentId; }
+    @Override
+    public void displayInfo(){
+        System.out.println("Appointment ID: "+getId());
+        System.out.println("Doctor: " + doctor.getName());
+        System.out.println("Patient: " + patient.getName());
+        System.out.println("Date: " + date);
+        System.out.println("Status: " + status);
+    }
 
     public String getDate() { return date; }
     public void setDate(String date) { this.date = date; }
