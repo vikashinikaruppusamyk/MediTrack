@@ -5,9 +5,8 @@ public class Doctor extends Person{
     private String specialization;
     private double consultationFee;
 
-    public Doctor(String name, int age, String phone, String email, String doctorId, String specialization, double consultationFee) {
-        super(name, age, phone, email); // sends these 4 to Person's constructor
-        this.doctorId = doctorId;
+    public Doctor(String id, String name, int age, String phone, String email, String specialization, double consultationFee) {
+        super(id, name, age, phone, email);
         this.specialization = specialization;
         this.consultationFee = consultationFee;
     }

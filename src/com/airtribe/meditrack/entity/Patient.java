@@ -1,30 +1,21 @@
 package com.airtribe.meditrack.entity;
 
 public class Patient extends Person{
-    private String patientId;
     private String medicalHistory;
     private String dateOfBirth;
 
-    public Patient(String name, int age, String phone, String email, String patientId,String medicalHistory, String dateOfBirth){
-        super(name,age,phone,email);
-        this.patientId = patientId;
-        this.dateOfBirth=dateOfBirth;
+    public Patient(String id, String name, int age, String phone, String email, String medicalHistory, String dateOfBirth){
+        super(id, name, age, phone, email);
+        this.dateOfBirth = dateOfBirth;
         this.medicalHistory = medicalHistory;
     }
 
     @Override
     public void displayInfo(){
-        System.out.println("Patient Id: "+patientId);
-        System.out.println("Name: "+getName());
-        System.out.println("Medical History: "+medicalHistory);
-        System.out.println("Date of Birth: "+dateOfBirth);
-    }
-
-    public void setPatientId(String patientId){
-        this.patientId=patientId;
-    }
-    public String getPatientId(){
-        return patientId;
+        System.out.println("Patient Id: " + getId()); // use getId() from Person
+        System.out.println("Name: " + getName());
+        System.out.println("Medical History: " + medicalHistory);
+        System.out.println("Date of Birth: " + dateOfBirth);
     }
 
     public void setMedicalHistory(String medicalHistory){
