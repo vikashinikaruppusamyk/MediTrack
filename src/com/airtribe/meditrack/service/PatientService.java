@@ -4,6 +4,7 @@ import com.airtribe.meditrack.entity.Patient;
 import com.airtribe.meditrack.util.DataStore;
 import com.airtribe.meditrack.util.Validator;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PatientService {
@@ -20,7 +21,15 @@ public class PatientService {
     public List<Patient> getAllPatients() {
         return patientStore.getAll();
     }
-
+    public List<Patient> searchByAge(int age) {
+        List<Patient> result = new ArrayList<>();
+        for (Patient p : patientStore.getAll()) {
+            if (p.getAge() == age) {
+                result.add(p);
+            }
+        }
+        return result;
+    }
     public void deletePatient(String id) {
         patientStore.delete(p -> p.getId().equals(id));
         System.out.println("Patient deleted successfully!");

@@ -1,6 +1,6 @@
 package com.airtribe.meditrack.entity;
 
-public class Appointment extends MedicalEntity{
+public class Appointment extends MedicalEntity implements Cloneable{
     private Doctor doctor;
     private Patient patient;
 
@@ -27,6 +27,17 @@ public class Appointment extends MedicalEntity{
     }
     public Patient getPatient(){
         return patient;
+    }
+
+    @Override
+    public Appointment clone() {
+        return new Appointment(
+                getId(),
+                doctor,              // same doctor reference is fine
+                patient.clone(),     // deep copy patient
+                new String(date),
+                status
+        );
     }
 
     @Override

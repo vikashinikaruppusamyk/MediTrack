@@ -1,6 +1,6 @@
 package com.airtribe.meditrack.entity;
 
-public class Patient extends Person{
+public class Patient extends Person implements Cloneable {
     private String medicalHistory;
     private String dateOfBirth;
 
@@ -9,7 +9,18 @@ public class Patient extends Person{
         this.dateOfBirth = dateOfBirth;
         this.medicalHistory = medicalHistory;
     }
-
+    @Override
+    public Patient clone() {
+        return new Patient(
+                getId(),
+                getName(),
+                getAge(),
+                getPhone(),
+                getEmail(),
+                new String(medicalHistory),
+                new String(dateOfBirth)
+        );
+    }
     @Override
     public void displayInfo(){
         System.out.println("Patient Id: " + getId()); // use getId() from Person

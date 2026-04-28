@@ -22,6 +22,7 @@ public class Bill extends MedicalEntity {
        System.out.println("Total Amount: " + getTotalAmount());
    }
 
+
     public Appointment getAppointment() { return appointment; }
     public void setAppointment(Appointment appointment) { this.appointment = appointment; }
 
