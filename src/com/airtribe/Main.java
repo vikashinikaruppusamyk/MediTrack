@@ -33,7 +33,8 @@ public class Main {
             switch (choice) {
                 case 1 -> handlePatientMenu(scanner, patientService);
                 case 2 -> handleDoctorMenu(scanner, doctorService);
-                case 3 -> handleAppointmentMenu(scanner, appointmentService);
+                case 3 -> handleAppointmentMenu(scanner, appointmentService, doctorService, patientService);
+                case 4 -> System.out.println("Billing coming soon!");
                 case 5 -> { System.out.println("Goodbye!"); running = false; }
                 default -> System.out.println("Invalid option!");
             }
@@ -187,7 +188,9 @@ public class Main {
             System.out.println("Invalid input: " + e.getMessage());
         }
     }
-    private static void handleAppointmentMenu(Scanner scanner, AppointmentService appointmentService) {
+
+    private static void handleAppointmentMenu(Scanner scanner, AppointmentService appointmentService,
+                                              DoctorService doctorService, PatientService patientService) {
         System.out.println("\n=== Appointment Management ===");
         System.out.println("1. Create Appointment");
         System.out.println("2. View All Appointments");
@@ -198,7 +201,7 @@ public class Main {
         scanner.nextLine();
 
         switch (choice) {
-            case 1 -> createAppointment(scanner, appointmentService);
+            case 1 -> createAppointment(scanner, appointmentService, doctorService, patientService);
             case 2 -> appointmentService.getAllAppointments().forEach(a -> a.displayInfo());
             case 3 -> {
                 System.out.print("Enter Appointment ID to cancel: ");
@@ -208,20 +211,21 @@ public class Main {
         }
     }
 
-    private static void createAppointment(Scanner scanner, AppointmentService appointmentService) {
+    private static void createAppointment(Scanner scanner, AppointmentService appointmentService,
+                                          DoctorService doctorService, PatientService patientService) {
         try {
             System.out.print("Enter Doctor ID: ");
             String doctorId = scanner.nextLine();
+            Doctor doctor = doctorService.searchById(doctorId);
+            if (doctor == null) { System.out.println("Doctor not found!"); return; }
 
             System.out.print("Enter Patient ID: ");
             String patientId = scanner.nextLine();
+            Patient patient = patientService.searchById(patientId);
+            if (patient == null) { System.out.println("Patient not found!"); return; }
 
             System.out.print("Enter Date (DD-MM-YYYY): ");
             String date = scanner.nextLine();
-
-            // For now create dummy doctor and patient with IDs
-            Doctor doctor = new Doctor(doctorId, "Unknown", 0, "0000000000", "unknown@email.com", "General", 0.0);
-            Patient patient = new Patient(patientId, "Unknown", 0, "0000000000", "unknown@email.com", "", "");
 
             String id = IdGenerator.generateAppointmentId();
             Appointment appointment = new Appointment(id, doctor, patient, date, AppointmentStatus.PENDING);
@@ -232,4 +236,5 @@ public class Main {
             System.out.println("Error: " + e.getMessage());
         }
     }
+
 }
