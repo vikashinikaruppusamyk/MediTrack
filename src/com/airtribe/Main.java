@@ -1,5 +1,11 @@
 package com.airtribe.meditrack;
 
+import com.airtribe.meditrack.entity.*;
+import com.airtribe.meditrack.service.*;
+import com.airtribe.meditrack.util.IdGenerator;
+import com.airtribe.meditrack.util.Validator;
+import java.util.Scanner;
+
 public class Main {
 
     static {
@@ -8,6 +14,222 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        System.out.println("MediTrack starting...");
+        Scanner scanner = new Scanner(System.in);
+        PatientService patientService = new PatientService();
+        DoctorService doctorService = new DoctorService();
+        AppointmentService appointmentService = new AppointmentService();
+
+        boolean running = true;
+        while (running) {
+            System.out.println("\n=== MediTrack ===");
+            System.out.println("1. Patient Management");
+            System.out.println("2. Doctor Management");
+            System.out.println("3. Appointment Management");
+            System.out.println("4. Billing");
+            System.out.println("5. Exit");
+            System.out.print("Choose an option: ");
+
+            int choice = scanner.nextInt();
+            switch (choice) {
+                case 1 -> handlePatientMenu(scanner, patientService);
+                case 2 -> handleDoctorMenu(scanner, doctorService);
+                case 3 -> handleAppointmentMenu(scanner, appointmentService);
+                case 5 -> { System.out.println("Goodbye!"); running = false; }
+                default -> System.out.println("Invalid option!");
+            }
+        }
+    }
+
+    private static void handlePatientMenu(Scanner scanner, PatientService patientService) {
+        System.out.println("\n=== Patient Management ===");
+        System.out.println("1. Add Patient");
+        System.out.println("2. View All Patients");
+        System.out.println("3. Search by ID");
+        System.out.println("4. Search by Name");
+        System.out.println("5. Search by Age");
+        System.out.println("6. Delete Patient");
+        System.out.print("Choose an option: ");
+
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+
+        switch (choice) {
+            case 1 -> addPatient(scanner, patientService);
+            case 2 -> patientService.getAllPatients().forEach(p -> p.displayInfo());
+            case 3 -> {
+                System.out.print("Enter ID: ");
+                String id = scanner.nextLine();
+                Patient p = patientService.searchById(id);
+                if (p != null) p.displayInfo();
+                else System.out.println("Patient not found!");
+            }
+            case 4 -> {
+                System.out.print("Enter Name: ");
+                String name = scanner.nextLine();
+                Patient p = patientService.searchByName(name);
+                if (p != null) p.displayInfo();
+                else System.out.println("Patient not found!");
+            }
+            case 5 -> {
+                System.out.print("Enter Age: ");
+                int age = scanner.nextInt();
+                patientService.searchByAge(age).forEach(p -> p.displayInfo());
+            }
+            case 6 -> {
+                System.out.print("Enter ID to delete: ");
+                String id = scanner.nextLine();
+                patientService.deletePatient(id);
+            }
+        }
+    }
+
+    private static void addPatient(Scanner scanner, PatientService patientService) {
+        try {
+            System.out.print("Enter Name: ");
+            String name = scanner.nextLine();
+            Validator.validateName(name);
+
+            System.out.print("Enter Age: ");
+            int age = scanner.nextInt();
+            scanner.nextLine();
+            Validator.validateAge(age);
+
+            System.out.print("Enter Phone: ");
+            String phone = scanner.nextLine();
+            Validator.validatePhone(phone);
+
+            System.out.print("Enter Email: ");
+            String email = scanner.nextLine();
+            Validator.validateEmail(email);
+
+            System.out.print("Enter Medical History: ");
+            String medicalHistory = scanner.nextLine();
+
+            System.out.print("Enter Date of Birth: ");
+            String dob = scanner.nextLine();
+
+            String id = IdGenerator.generatePatientId();
+            Patient patient = new Patient(id, name, age, phone, email, medicalHistory, dob);
+            patientService.addPatient(patient);
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid input: " + e.getMessage());
+        }
+    }
+    private static void handleDoctorMenu(Scanner scanner, DoctorService doctorService) {
+        System.out.println("\n=== Doctor Management ===");
+        System.out.println("1. Add Doctor");
+        System.out.println("2. View All Doctors");
+        System.out.println("3. Search by ID");
+        System.out.println("4. Search by Name");
+        System.out.println("5. Delete Doctor");
+        System.out.print("Choose an option: ");
+
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+
+        switch (choice) {
+            case 1 -> addDoctor(scanner, doctorService);
+            case 2 -> doctorService.getAllDoctors().forEach(d -> d.displayInfo());
+            case 3 -> {
+                System.out.print("Enter ID: ");
+                String id = scanner.nextLine();
+                Doctor d = doctorService.searchById(id);
+                if (d != null) d.displayInfo();
+                else System.out.println("Doctor not found!");
+            }
+            case 4 -> {
+                System.out.print("Enter Name: ");
+                String name = scanner.nextLine();
+                Doctor d = doctorService.searchByName(name);
+                if (d != null) d.displayInfo();
+                else System.out.println("Doctor not found!");
+            }
+            case 5 -> {
+                System.out.print("Enter ID to delete: ");
+                String id = scanner.nextLine();
+                doctorService.deleteDoctor(id);
+            }
+        }
+    }
+
+    private static void addDoctor(Scanner scanner, DoctorService doctorService) {
+        try {
+            System.out.print("Enter Name: ");
+            String name = scanner.nextLine();
+            Validator.validateName(name);
+
+            System.out.print("Enter Age: ");
+            int age = scanner.nextInt();
+            scanner.nextLine();
+            Validator.validateAge(age);
+
+            System.out.print("Enter Phone: ");
+            String phone = scanner.nextLine();
+            Validator.validatePhone(phone);
+
+            System.out.print("Enter Email: ");
+            String email = scanner.nextLine();
+            Validator.validateEmail(email);
+
+            System.out.print("Enter Specialization: ");
+            String specialization = scanner.nextLine();
+
+            System.out.print("Enter Consultation Fee: ");
+            double fee = scanner.nextDouble();
+            scanner.nextLine();
+
+            String id = IdGenerator.generateDoctorId();
+            Doctor doctor = new Doctor(id, name, age, phone, email, specialization, fee);
+            doctorService.addDoctor(doctor);
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid input: " + e.getMessage());
+        }
+    }
+    private static void handleAppointmentMenu(Scanner scanner, AppointmentService appointmentService) {
+        System.out.println("\n=== Appointment Management ===");
+        System.out.println("1. Create Appointment");
+        System.out.println("2. View All Appointments");
+        System.out.println("3. Cancel Appointment");
+        System.out.print("Choose an option: ");
+
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+
+        switch (choice) {
+            case 1 -> createAppointment(scanner, appointmentService);
+            case 2 -> appointmentService.getAllAppointments().forEach(a -> a.displayInfo());
+            case 3 -> {
+                System.out.print("Enter Appointment ID to cancel: ");
+                String id = scanner.nextLine();
+                appointmentService.cancelAppointment(id);
+            }
+        }
+    }
+
+    private static void createAppointment(Scanner scanner, AppointmentService appointmentService) {
+        try {
+            System.out.print("Enter Doctor ID: ");
+            String doctorId = scanner.nextLine();
+
+            System.out.print("Enter Patient ID: ");
+            String patientId = scanner.nextLine();
+
+            System.out.print("Enter Date (DD-MM-YYYY): ");
+            String date = scanner.nextLine();
+
+            // For now create dummy doctor and patient with IDs
+            Doctor doctor = new Doctor(doctorId, "Unknown", 0, "0000000000", "unknown@email.com", "General", 0.0);
+            Patient patient = new Patient(patientId, "Unknown", 0, "0000000000", "unknown@email.com", "", "");
+
+            String id = IdGenerator.generateAppointmentId();
+            Appointment appointment = new Appointment(id, doctor, patient, date, AppointmentStatus.PENDING);
+            appointmentService.createAppointment(appointment);
+            System.out.println("Appointment created successfully!");
+
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
     }
 }
