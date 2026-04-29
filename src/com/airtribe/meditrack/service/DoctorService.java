@@ -4,7 +4,7 @@ import com.airtribe.meditrack.entity.Doctor;
 
 import com.airtribe.meditrack.util.DataStore;
 import com.airtribe.meditrack.util.Validator;
-
+import java.util.stream.Collectors;
 import java.util.List;
 
 public class DoctorService {
@@ -32,5 +32,23 @@ public class DoctorService {
     public void deleteDoctor(String id) {
         doctorStore.delete(d -> d.getId().equals(id));
         System.out.println("Doctor deleted successfully!");
+    }
+    public List<Doctor> filterBySpecialization(String specialization) {
+        return doctorStore.getAll()
+                .stream()
+                .filter(d -> d.getSpecialization().equals(specialization))
+                .collect(Collectors.toList());
+    }
+    public double getAverageConsultationFee() {
+        return doctorStore.getAll()
+                .stream()
+                .mapToDouble(Doctor::getConsultationFee)
+                .average()
+                .orElse(0.0);
+    }
+    public long countDoctors() {
+        return doctorStore.getAll()
+                .stream()
+                .count();
     }
 }

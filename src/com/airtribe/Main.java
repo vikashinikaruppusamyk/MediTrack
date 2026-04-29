@@ -135,6 +135,9 @@ public class Main {
         System.out.println("4. Search by Name");
         System.out.println("5. Delete Doctor");
         System.out.println("6. Save Doctors to CSV");
+        System.out.println("7. Filter by Specialization");
+        System.out.println("8. Average Consultation Fee");
+        System.out.println("9. Total Doctors");
         System.out.print("Choose an option: ");
 
         int choice = scanner.nextInt();
@@ -163,6 +166,13 @@ public class Main {
                 doctorService.deleteDoctor(id);
             }
             case 6 -> CSVUtil.saveDoctors(doctorService.getAllDoctors());
+            case 7 -> {
+                System.out.print("Enter Specialization: ");
+                String spec = scanner.nextLine();
+                doctorService.filterBySpecialization(spec).forEach(d -> d.displayInfo());
+            }
+            case 8 -> System.out.println("Average Fee: " + doctorService.getAverageConsultationFee());
+            case 9 -> System.out.println("Total Doctors: " + doctorService.countDoctors());
         }
     }
 
