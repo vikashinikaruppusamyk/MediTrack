@@ -5,6 +5,7 @@ import com.airtribe.meditrack.service.*;
 import com.airtribe.meditrack.util.CSVUtil;
 import com.airtribe.meditrack.util.IdGenerator;
 import com.airtribe.meditrack.util.Validator;
+import com.airtribe.meditrack.service.BillService;
 import java.util.Scanner;
 
 public class Main {
@@ -42,7 +43,7 @@ public class Main {
                 case 1 -> handlePatientMenu(scanner, patientService);
                 case 2 -> handleDoctorMenu(scanner, doctorService);
                 case 3 -> handleAppointmentMenu(scanner, appointmentService, doctorService, patientService);
-                case 4 -> System.out.println("Billing coming soon!");
+                case 4 -> handleBillingMenu(scanner, appointmentService);
                 case 5 -> { System.out.println("Goodbye!"); running = false; }
                 default -> System.out.println("Invalid option!");
             }
@@ -257,6 +258,20 @@ public class Main {
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
+    }
+    private static void handleBillingMenu(Scanner scanner, AppointmentService appointmentService) {
+        System.out.println("\n=== Billing ===");
+        System.out.print("Enter Appointment ID to generate bill: ");
+        scanner.nextLine();
+        String id = scanner.nextLine();
+        Appointment appointment = appointmentService.findById(id);
+        if (appointment == null) {
+            System.out.println("Appointment not found!");
+            return;
+        }
+        BillService billService = new BillService(appointment);
+        billService.generateBill();
+        billService.processPayment();
     }
 
 }
