@@ -13,6 +13,10 @@ File I/O, and Java 8+ streams.
 - CSV persistence (save/load)
 - Java Streams analytics
 
+## Bonus Features
+- File I/O with CSV persistence
+- Java Streams and Lambdas
+
 ## Project Structure
 com.airtribe.meditrack
 ├── entity
