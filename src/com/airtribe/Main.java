@@ -2,6 +2,7 @@ package com.airtribe.meditrack;
 
 import com.airtribe.meditrack.entity.*;
 import com.airtribe.meditrack.service.*;
+import com.airtribe.meditrack.util.CSVUtil;
 import com.airtribe.meditrack.util.IdGenerator;
 import com.airtribe.meditrack.util.Validator;
 import java.util.Scanner;
@@ -18,6 +19,13 @@ public class Main {
         PatientService patientService = new PatientService();
         DoctorService doctorService = new DoctorService();
         AppointmentService appointmentService = new AppointmentService();
+
+        if (args.length > 0 && args[0].equals("--loadData")) {
+            System.out.println("Loading data from CSV...");
+            CSVUtil.loadPatients().forEach(p -> patientService.addPatient(p));
+            CSVUtil.loadDoctors().forEach(d -> doctorService.addDoctor(d));
+            System.out.println("Data loaded successfully!");
+        }
 
         boolean running = true;
         while (running) {
@@ -49,6 +57,7 @@ public class Main {
         System.out.println("4. Search by Name");
         System.out.println("5. Search by Age");
         System.out.println("6. Delete Patient");
+        System.out.println("7. Save Patients to CSV");
         System.out.print("Choose an option: ");
 
         int choice = scanner.nextInt();
@@ -81,6 +90,7 @@ public class Main {
                 String id = scanner.nextLine();
                 patientService.deletePatient(id);
             }
+            case 7 -> CSVUtil.savePatients(patientService.getAllPatients());
         }
     }
 
@@ -124,6 +134,7 @@ public class Main {
         System.out.println("3. Search by ID");
         System.out.println("4. Search by Name");
         System.out.println("5. Delete Doctor");
+        System.out.println("6. Save Doctors to CSV");
         System.out.print("Choose an option: ");
 
         int choice = scanner.nextInt();
@@ -151,6 +162,7 @@ public class Main {
                 String id = scanner.nextLine();
                 doctorService.deleteDoctor(id);
             }
+            case 6 -> CSVUtil.saveDoctors(doctorService.getAllDoctors());
         }
     }
 
