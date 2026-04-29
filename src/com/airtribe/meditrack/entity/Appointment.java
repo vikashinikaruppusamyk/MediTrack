@@ -1,12 +1,22 @@
 package com.airtribe.meditrack.entity;
-
+/**
+ * Represents an appointment between a doctor and patient.
+ * Extends MedicalEntity and implements Cloneable.
+ */
 public class Appointment extends MedicalEntity implements Cloneable{
     private Doctor doctor;
     private Patient patient;
 
     private String date;
     private AppointmentStatus status;
-
+    /**
+     * Creates a new Appointment with the given details.
+     * @param appointmentId unique identifier
+     * @param doctor the assigned doctor
+     * @param patient the assigned patient
+     * @param date appointment date
+     * @param status current appointment status
+     */
     public Appointment(String appointmentId, Doctor doctor, Patient patient, String date, AppointmentStatus status) {
         super(appointmentId);
         this.doctor = doctor;
@@ -29,6 +39,10 @@ public class Appointment extends MedicalEntity implements Cloneable{
         return patient;
     }
 
+    /**
+     * Creates and returns a deep copy of this appointment.
+     * @return deep copied Appointment object
+     */
     @Override
     public Appointment clone() {
         return new Appointment(
@@ -39,7 +53,9 @@ public class Appointment extends MedicalEntity implements Cloneable{
                 status
         );
     }
-
+    /**
+     * Displays the appointment's information to the console.
+     */
     @Override
     public void displayInfo(){
         System.out.println("Appointment ID: "+getId());

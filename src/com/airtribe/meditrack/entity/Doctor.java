@@ -1,10 +1,22 @@
 package com.airtribe.meditrack.entity;
-
+/**
+ * Represents a doctor in the MediTrack system.
+ * Extends Person with specialization and consultation fee.
+ */
 public class Doctor extends Person{
     private String doctorId;
     private String specialization;
     private double consultationFee;
-
+    /**
+     * Creates a new Doctor with the given details.
+     * @param id unique identifier
+     * @param name full name
+     * @param age age in years
+     * @param phone 10-digit phone number
+     * @param email valid email address
+     * @param specialization medical specialization
+     * @param consultationFee consultation fee in rupees
+     */
     public Doctor(String id, String name, int age, String phone, String email, String specialization, double consultationFee) {
         super(id, name, age, phone, email);
         this.specialization = specialization;

@@ -7,14 +7,26 @@ import com.airtribe.meditrack.util.DataStore;
 import com.airtribe.meditrack.util.IdGenerator;
 import com.airtribe.meditrack.constants.Constants;
 
+/**
+ * Service class for managing billing operations.
+ * Implements Payable to generate and process bills.
+ */
 public class BillService implements Payable {
     private DataStore<Bill> billStore = new DataStore<>();
     private Appointment appointment;
 
+    /**
+     * Creates a BillService for the given appointment.
+     * @param appointment the appointment to bill
+     */
     public BillService(Appointment appointment) {
         this.appointment = appointment;
     }
 
+    /**
+     * Generates a bill based on the doctor's consultation fee and tax rate.
+     * @return the generated Bill object
+     */
     @Override
     public Bill generateBill() {
         double amount = appointment.getDoctor().getConsultationFee();
@@ -24,6 +36,9 @@ public class BillService implements Payable {
         return bill;
     }
 
+    /**
+     * Processes payment for the current appointment's bill.
+     */
     @Override
     public void processPayment() {
         System.out.println("Payment processed successfully!");

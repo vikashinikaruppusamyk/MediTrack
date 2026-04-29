@@ -1,11 +1,20 @@
 package com.airtribe.meditrack.entity;
-
+/**
+ * Represents a bill generated for an appointment.
+ * Total amount is auto-calculated including tax.
+ */
 public class Bill extends MedicalEntity {
     private Appointment appointment;
     private double amount;
     private double tax;
     private double totalAmount;
-
+    /**
+     * Creates a new Bill with auto-calculated total amount.
+     * @param billId unique identifier
+     * @param appointment the associated appointment
+     * @param amount base consultation amount
+     * @param tax tax percentage to apply
+     */
     public Bill(String billId, Appointment appointment, double amount, double tax) {
         super(billId);
         this.appointment = appointment;
@@ -13,7 +22,9 @@ public class Bill extends MedicalEntity {
         this.tax = tax;
         this.totalAmount = amount + (amount * tax / 100);
     }
-
+    /**
+     * Displays the bill's information to the console.
+     */
    @Override
    public void displayInfo(){
        System.out.println("Bill ID " + getId());
